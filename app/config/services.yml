@@ -1,0 +1,9 @@
+services:
+    repository.user:
+        class: Doctrine\Orm\EntityRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - AppBundle\Entity\ApiUser
+    app.user_service:
+        class: AppBundle\Service\ApiUserService
+        arguments: ['@doctrine.orm.entity_manager', "@repository.user"]
