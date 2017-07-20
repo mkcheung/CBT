@@ -10,8 +10,9 @@
 
         initialize: function (options) {
             this.template = _.template($('#testTemplate').html())
-            this.options = options.collection;
-            console.log(this.options);
+            this.collection = options.collection;
+            this.collection.on('add', this.render, this);
+            console.log(this.collection);
         },
 
         events:{
@@ -30,18 +31,15 @@
 
             var data = {
                 "username": username,
-                "firstname": firstname,
-                "lastname": lastname,
+                "first_name": firstname,
+                "last_name": lastname,
                 "email": email,
                 "password":password
             };
 
             var promise = $.ajax(this.ajaxUpdate(data));
-            promise.done(function(){
-                that.tbl
-                    .rows()
-                    .invalidate()
-                    .draw();
+            promise.done(function(response){
+                that.collection.add(data);
             })
         },
 
@@ -55,6 +53,7 @@
               beforeSend: function(xhr){
               },
               success: function(response){
+                  console.log(response);
               }
           };
         },
@@ -64,7 +63,7 @@
             var self = this;
 
             this.$el.html(this.template);
-
+console.log(this.collection.toJSON());
             this.tbl = $("#testing1234").DataTable({
                 data: this.collection.toJSON(),
                 columns:[{

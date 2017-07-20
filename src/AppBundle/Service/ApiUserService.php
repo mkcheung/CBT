@@ -42,9 +42,9 @@ class ApiUserService
         $user = new ApiUser();
 
         $user->setUsername($userData['username']);
-        $user->setFirstName($userData['firstname']);
+        $user->setFirstName($userData['first_name']);
         $user->setEmail($userData['email']);
-        $user->setLastName($userData['lastname']);
+        $user->setLastName($userData['last_name']);
         $user->setPassword(password_hash($userData['password'], PASSWORD_DEFAULT));
         $this->em->persist($user);
         $this->em->flush();
