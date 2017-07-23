@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 //use Symfony\Component\HttpFoundation\Request;
 
@@ -28,21 +29,6 @@ class DefaultController extends Controller
                 'usersJson' => $usersJson
             ]
         );
-    }
-    /**
-     * @Route("/users/create", name="create_user")
-     * @Method({"POST"})
-     */
-    public function createUserAction(Request $request)
-    {
-
-        $userServices = $this->get('app.user_service');
-        $user = $userServices->createUser($request);
-
-
-        $response = new JsonResponse($user, 200);
-
-        return $response;
     }
 
 
