@@ -1,0 +1,31 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+
+get_all_users:
+    pattern: /users/getAllUsers
+    defaults: { _controller: AppBundle:Users:getAllUsers }
+    requirements:
+        _method:  GET
+    options:
+        expose: true
+
+create_user:
+    pattern: /users/create
+    defaults: { _controller: AppBundle:Users:createUser }
+    requirements:
+        _method:  POST
+    options:
+        expose: true
+
+delete_user:
+    pattern: /users/delete
+    defaults: { _controller: AppBundle:Users:deleteUser }
+    requirements:
+        _method:  DELETE
+    options:
+        expose: true
