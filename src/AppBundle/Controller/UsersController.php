@@ -27,7 +27,6 @@ class UsersController extends FOSRestController
         $userServices = $this->get('app.user_service');
         $users = $userServices->getUsers();
         $users = $serializer->serialize($users, 'json');
-//var_dump(json_encode($users));die;
         return new Response(json_encode($users),200);
     }
 
@@ -44,6 +43,15 @@ class UsersController extends FOSRestController
             'success'=>true,
             'data'=>$user
         ], 200);
+    }
 
+    public function deleteUserAction(Request $request)
+    {
+        $userServices = $this->get('app.user_service');
+        $result = $userServices->deleteUser($request);
+        return new JsonResponse([
+            'success' => $result,
+            'message' => 'User Deleted'
+        ], 200);
     }
 }

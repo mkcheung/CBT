@@ -50,4 +50,15 @@ class ApiUserService
         $this->em->flush();
         return $user;
     }
+
+    public function deleteUser(Request $request)
+    {
+
+        $userData = $request->request->all();
+        $user = $this->userRepo->findOneBy(['user_id' => $userData['user_id']]);
+
+        $this->em->remove($user);
+        $this->em->flush();
+        return true;
+    }
 }

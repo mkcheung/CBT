@@ -11,6 +11,7 @@
         initialize: function (options) {
             this.template = _.template($('#testTemplate').html())
             this.collection.on('add', this.render, this);
+            this.listenTo(this.collection, 'remove', this.render);
         },
 
         events:{
@@ -36,7 +37,7 @@
                 "password":password
             };
 
-            var promise = $.ajax(this.ajaxUpdate(data));
+            var promise = $.ajax(this.ajaxUpdate(data,'create_user','POST'));
             promise.done(function(response){
                 var newUserData = JSON.parse(response.data);
 
@@ -51,15 +52,30 @@
             })
         },
 
-        deleteUser: function(e){
-            alert('delete simulation');
+        deleteUser: function(event){
+            var that = this;
+            event.preventDefault();
+            var userId = $(event.currentTarget).data('id');
+
+            var data = {
+                "user_id": userId
+            };
+            var promise = $.ajax(this.ajaxUpdate(data, 'delete_user', 'DELETE'));
+            promise.done(function(response){
+
+                // that.collection.remove([{ 'user_id': data.user_id }]);
+                var toDelete = that.collection.get(data.user_id);
+                console.log(toDelete);
+                // that.collection.where({'user_id': data.user_id});
+                that.collection.remove(toDelete);
+            });
         },
 
-        ajaxUpdate: function(data){
+        ajaxUpdate: function(data, path, verb){
           var that = this;
           return{
-              type: "POST",
-              url: Routing.generate('create_user'),
+              type: verb,
+              url: Routing.generate(path),
               data:data,
               beforeSend: function(xhr){
               },
@@ -68,6 +84,12 @@
           };
         },
 
+        renderDeleteButton: function(data){
+            var delButton = _.template($('#userDeleteButtonTemplate').html());
+            return delButton({
+                id:data
+            });
+        },
 
         render: function render(){
             var self = this;
@@ -93,9 +115,7 @@
                 }, {
 
                     "data":"user_id",
-                    "render": function (user_id) {
-                        return '<button type="button" class="close userDeleteSubmit">Delete</button>';
-                    }
+                    "render": self.renderDeleteButton
                 }]
             });
             return this;
@@ -103,6 +123,7 @@
     });
 
     var UserModel = Backbone.Model.extend({
+        idAttribute:"user_id"
     });
     var UsersCollection = Backbone.Collection.extend({
         model:UserModel,
@@ -120,7 +141,8 @@
         var usersView = new UsersView({
             collection:allUsers
         });
-        usersView.render();
+        window.usersView = usersView;
+        window.usersView.render();
     });
 
 })();
