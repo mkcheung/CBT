@@ -19,6 +19,20 @@ use Symfony\Component\HttpFoundation\Request;
 class UsersController extends FOSRestController
 {
 
+    public function indexAction()
+    {
+
+        $serializer = $this->get('jms_serializer');
+        $userServices = $this->get('app.user_service');
+        $users = $userServices->getUsers();
+        $usersJson = $serializer->serialize($users, 'json');
+
+        return $this->render('users/index.html.twig',
+            [
+                'usersJson' => $usersJson
+            ]
+        );
+    }
 
     public function getAllUsersAction(Request $request)
     {

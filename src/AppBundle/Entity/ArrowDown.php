@@ -2,41 +2,36 @@
 /**
  * Created by PhpStorm.
  * User: marscheung
- * Date: 7/16/17
- * Time: 10:52 PM
+ * Date: 7/24/17
+ * Time: 9:40 PM
  */
+
 
 namespace AppBundle\Entity;
 
-use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\DateTimeType;
 /**
  * @ORM\Entity
- * @ORM\Table(name="apiuser")
+ * @ORM\Table(name="arrow_down")
  */
-class ApiUser extends BaseUser
+class ArrowDown
 {
 
     /**
      * @ORM\Id()
-     * @ORM\Column(name="user_id", type = "integer")
+     * @ORM\Column(name="arrow_down_id", type = "integer")
      * @ORM\GeneratedValue(strategy = "IDENTITY")
      * @var integer
      */
-    protected $user_id;
+    protected $arrowDownId;
 
     /**
      * @var \string
-     * @ORM\Column(name="firstName", type="string", nullable=false)
+     * @ORM\Column(name="drillDown", type="text", nullable=false)
      */
-    protected $firstName;
-    /**
-     * @var \string
-     * @ORM\Column(name="lastName", type="string", nullable=false)
-     */
-    protected $lastName;
+    protected $drillDown;
 
     /**
      * @var \DateTime
@@ -51,8 +46,9 @@ class ApiUser extends BaseUser
     protected $modifiedAt;
 
     /**
-     * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="CognitiveAnalysis", mappedBy="apiUser")
+     * @var CognitiveAnalysis
+     * @ORM\ManyToOne(targetEntity="CognitiveAnalysis", inversedBy="arrowDown")
+     * @ORM\JoinColumn(name="cognitive_analysis_id", referencedColumnName="cognitive_analysis_id")
      */
     protected $cognitiveAnalysis;
 
@@ -69,57 +65,33 @@ class ApiUser extends BaseUser
      *
      * @return integer
      */
-    public function getUserId()
+    public function getArrowDownId()
     {
-        return $this->user_id;
+        return $this->arrowDownId;
     }
 
     /**
-     * Set firstName
+     * Set drillDown
      *
-     * @param string $firstName
+     * @param string $drillDown
      *
-     * @return ApiUser
+     * @return ArrowDown
      */
-    public function setFirstName($firstName)
+    public function setDrillDown($drillDown)
     {
-        $this->firstName = $firstName;
+        $this->drillDown = $drillDown;
 
         return $this;
     }
 
     /**
-     * Get firstName
+     * Get drillDown
      *
      * @return string
      */
-    public function getFirstName()
+    public function getDrillDown()
     {
-        return $this->firstName;
-    }
-
-    /**
-     * Set lastName
-     *
-     * @param string $lastName
-     *
-     * @return ApiUser
-     */
-    public function setLastName($lastName)
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    /**
-     * Get lastName
-     *
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
+        return $this->drillDown;
     }
 
     /**
@@ -127,7 +99,7 @@ class ApiUser extends BaseUser
      *
      * @param \DateTime $createdAt
      *
-     * @return ApiUser
+     * @return ArrowDown
      */
     public function setCreatedAt($createdAt)
     {
@@ -151,7 +123,7 @@ class ApiUser extends BaseUser
      *
      * @param \DateTime $modifiedAt
      *
-     * @return ApiUser
+     * @return ArrowDown
      */
     public function setModifiedAt($modifiedAt)
     {

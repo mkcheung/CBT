@@ -5,6 +5,13 @@ app:
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
+users_index:
+    pattern: /users/
+    defaults: { _controller: AppBundle:Users:index }
+    requirements:
+        _method:  GET
+    options:
+        expose: true
 
 get_all_users:
     pattern: /users/getAllUsers
